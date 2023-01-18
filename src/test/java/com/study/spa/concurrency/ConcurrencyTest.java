@@ -13,11 +13,11 @@ public class ConcurrencyTest {
         log.info("concurrency start");
 
         Runnable test1 = () -> {
-            concurrencyServiceTest.fail(1,"test1");
+            concurrencyServiceTest.start(1);
         };
 
         Runnable test2 = () -> {
-            concurrencyServiceTest.fail(2,"test2");
+            concurrencyServiceTest.start(2);
         };
 
         Thread threadA = new Thread(test1);
@@ -35,15 +35,15 @@ public class ConcurrencyTest {
     }
 
     @Test
-    public void concurrencySuccess(){
+    public void concurrencySynchronized(){
         log.info("concurrency start");
 
         Runnable test1 = () -> {
-            concurrencyServiceTest.success(1,"test1");
+            concurrencyServiceTest.startSynchronized(1);
         };
 
         Runnable test2 = () -> {
-            concurrencyServiceTest.success(2,"test2");
+            concurrencyServiceTest.startSynchronized(2);
         };
 
         Thread threadA = new Thread(test1);
