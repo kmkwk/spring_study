@@ -1,6 +1,9 @@
 package com.study.spa.concurrency;
 
+import com.study.spa.entity.Concurrency;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Currency;
 
 @Slf4j
 public class ConcurrencyServiceTest {

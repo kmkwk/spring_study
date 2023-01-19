@@ -60,11 +60,11 @@ public class ConcurrencyTest {
         log.info("concurrency end");
     }
 
-    private void sleep(int mills) {
-        try {
-            Thread.sleep(mills);
-        } catch (InterruptedException e){
-            e.printStackTrace();
+        private void sleep(int mills) {
+            try {
+                Thread.sleep(mills);
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            }
         }
-    }
 }
