@@ -14,7 +14,7 @@ public class ConcurrencyServiceTest {
         log.info("number start");
         log.info("현재 number = {} , 저장 saveNumber = {} ", number, saveNumber);
         saveNumber = number;
-        sleep(1000);
+        sleep(100);
         log.info("조회 saveNumber = {}",saveNumber);
 
         return saveNumber;

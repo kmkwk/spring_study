@@ -1,30 +1,31 @@
 package com.study.spa.concurrency;
 
-import com.study.spa.entity.Concurrency;
-import com.study.spa.repository.ConcurrencyRepository;
+import com.study.spa.service.ConcurrencyService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("test")
+@SpringBootTest
 @Slf4j
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class JpaConcurrencyTest {
 
-    private static int saveNumber;
-
     @Autowired
-    private ConcurrencyRepository concurrencyRepository;
+    private ConcurrencyService concurrencyService;
 
     @Test
     public void concurrency(){
         log.info("concurrency start");
 
-        Runnable test1 = jpaConcurrency();
-        Runnable test2 = jpaConcurrency();
+        Runnable test1 = () -> {
+            concurrencyService.jpaConcurrency(1L);
+        };
+
+        Runnable test2 = () -> {
+            concurrencyService.jpaConcurrency(1L);
+        };
 
         Thread threadA = new Thread(test1);
         threadA.setName("thread-A");
@@ -33,26 +34,10 @@ public class JpaConcurrencyTest {
         threadB.setName("thread-B");
 
         threadA.start();
-        log.info("변경 count = {}",saveNumber);
-        sleep(100);
+        sleep(200);
         threadB.start();
-        log.info("변경 count = {}",saveNumber);
 
-        sleep(3000);
         log.info("concurrency end");
-    }
-
-    @Transactional
-    public Runnable jpaConcurrency(){
-        log.info("jpaConcurrency start");
-        Concurrency concurrency = concurrencyRepository.findById(1L).get();
-        log.info("현재 count = {}" , concurrency.getCount());
-        concurrency.setCount();
-        sleep(1000);
-        saveNumber++;
-        log.info("jpaConcurrency end");
-
-        return null;
     }
 
     private void sleep(int mills) {

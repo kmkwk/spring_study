@@ -12,8 +12,6 @@ import java.util.Optional;
 
 public interface ConcurrencyRepository extends JpaRepository<Concurrency, Long> {
 
-
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "1000")})
+    @Lock(LockModeType.PESSIMISTIC_READ)
     Optional<Concurrency> findById(Long id);
 }
